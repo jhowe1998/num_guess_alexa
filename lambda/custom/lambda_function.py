@@ -41,7 +41,7 @@ def handle_fallback_request():
     return build_response(build_speechlet_response(card_title, speech_output, speech_output, should_end_session))
 
 
-def demo_response():
+def game_start_response():
     card_title = "Number Guess Demo"
     speech_output = "<speak>Let's start the game! <amazon:effect name=\"whispered\">Which is not ready at the moment.</amazon:effect> </speak>"
     reprompt_text = "<speak> <emphasis level=\"strong\">What are you looking at?</emphasis> </speak>"
@@ -73,16 +73,20 @@ def on_intent(intent_request, session):
     intent_name = intent_request['intent']['name']
 
     #Dispatch to your skill's intent handlers
-    if intent_name == "Demo":
-        return demo_response()
-    elif intent_name == "AMAZON.HelpIntent":
+    if intent_name == "StartGame":
+        return game_start_response()
+    
+    if intent_name == "AMAZON.HelpIntent":
         return get_welcome_response()
-    elif intent_name == "AMAZON.CancelIntent" or intent_name == "AMAZON.StopIntent":
+    
+    if intent_name == "AMAZON.CancelIntent" or intent_name == "AMAZON.StopIntent":
         return handle_session_end_request()
-    elif intent_name == "AMAZON.FallbackIntent":
+    
+    if intent_name == "AMAZON.FallbackIntent":
         return handle_fallback_request()
-    else:
-        raise ValueError("Invalid intent")
+    
+#    else:
+#        raise ValueError("Invalid intent")
 
 def on_session_ended(session_ended_request, session):
     #Called when the user ends the session. Is not called when the skill returns should_end_session = True
